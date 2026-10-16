@@ -29,13 +29,14 @@ soft.position.set(2, -3, 4);
 scene.add(soft);
 
 const watchPivot = new THREE.Group();
-watchPivot.rotation.set(-0.13, 4.9, 0.07);
-watchPivot.position.y = 0.28;
+const frontAngle = 0.48;
+watchPivot.rotation.set(-0.13, frontAngle, 0.07);
+watchPivot.position.set(-0.3, 0.2, 0);
 scene.add(watchPivot);
 let centeredWatch = null;
 function fitWatch() {
   if (!centeredWatch) return;
-  const targetSize = viewer.clientWidth < 700 ? 0.9 : 1.85;
+  const targetSize = viewer.clientWidth < 700 ? 1.1 : 2.1;
   centeredWatch.scale.setScalar(targetSize / centeredWatch.userData.originalSize);
 }
 const modelUrls = [
@@ -102,13 +103,14 @@ function resize() {
   renderer.setSize(width, height, false);
   camera.aspect = width / height;
   camera.position.z = width < 700 ? 7.2 : 6;
-  watchPivot.position.y = width < 700 ? 0.16 : 0.28;
+  watchPivot.position.set(width < 700 ? -0.18 : -0.3, width < 700 ? 0.14 : 0.2, 0);
   camera.updateProjectionMatrix();
   fitWatch();
 }
 new ResizeObserver(resize).observe(viewer);
 resize();
 const clock = new THREE.Clock();
+let idleTime = 0;
 let visible = true;
 if ('IntersectionObserver' in window) {
   new IntersectionObserver(entries => { visible = entries[0].isIntersecting; }).observe(viewer);
@@ -118,7 +120,11 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.05);
   if (visible && !document.hidden) {
     if (!dragging) {
-      watchPivot.rotation.y += velocityX + (reducedMotion ? 0 : 0.12 * dt);
+      idleTime += dt;
+      watchPivot.rotation.y += velocityX;
+      const restingAngle = frontAngle + (reducedMotion ? 0 : Math.sin(idleTime * 0.55) * 0.12);
+      const shortestTurn = Math.atan2(Math.sin(restingAngle - watchPivot.rotation.y), Math.cos(restingAngle - watchPivot.rotation.y));
+      watchPivot.rotation.y += shortestTurn * (1 - Math.exp(-0.55 * dt));
       watchPivot.rotation.x = THREE.MathUtils.clamp(watchPivot.rotation.x + velocityY, -0.75, 0.75);
       const decay = Math.exp(-3.5 * dt);
       velocityX *= decay;
