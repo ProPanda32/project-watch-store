@@ -6,6 +6,11 @@ const viewer = document.getElementById('watch-hero-viewer');
 const canvas = document.getElementById('watch-hero-canvas');
 const status = document.getElementById('watch-hero-status');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const backgroundVideo = document.getElementById('watch-hero-video');
+if (reducedMotion && backgroundVideo) {
+  backgroundVideo.pause();
+  backgroundVideo.removeAttribute('autoplay');
+}
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
 camera.position.set(0, 0, 6);
@@ -36,7 +41,7 @@ scene.add(watchPivot);
 let centeredWatch = null;
 function fitWatch() {
   if (!centeredWatch) return;
-  const targetSize = viewer.clientWidth < 700 ? 1.1 : 2.1;
+  const targetSize = viewer.clientWidth < 700 ? 1.0 : 1.9;
   centeredWatch.scale.setScalar(targetSize / centeredWatch.userData.originalSize);
 }
 const modelUrls = [

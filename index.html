@@ -6,7 +6,7 @@
   <title>Merlock | Time, well chosen.</title>
   <meta name="description" content="Discover the Merlock celestial watch collection. Midnight-blue dials, intricate skeleton details and champagne-gold finishes.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23191919'/%3E%3Cpath d='M6 24V8l10 12L26 8v16' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="storefront.css?v=2">
+  <link rel="stylesheet" href="storefront.css?v=3">
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body id="top">
@@ -38,6 +38,9 @@
   <main>
     <section class="hero watch-hero" aria-labelledby="hero-title">
       <div class="hero-stage">
+        <video class="watch-hero-video" id="watch-hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+          <source src="assets/videos/beige-ribbon-flowing.mp4" type="video/mp4">
+        </video>
         <div class="hero-media" id="watch-hero-viewer" role="img" aria-label="Interactive 3D Movado gold watch">
           <canvas id="watch-hero-canvas" aria-label="Drag to turn the Movado watch"></canvas>
           <span class="watch-hero-status" id="watch-hero-status" role="status">Loading the watch…</span>
@@ -71,6 +74,6 @@
   <dialog id="tracking-dialog" aria-labelledby="tracking-title"><div class="dialog-content"><div class="dialog-top"><h2 id="tracking-title">Track a demo order</h2><button class="close" type="button" data-close-shop="tracking-dialog" aria-label="Close order tracking">×</button></div><p class="preview-note">Sample tracking only. Orders are stored in this browser; nothing is dispatched.</p><form id="tracking-form"><label class="checkout-label">Order number<input name="orderId" required maxlength="100" placeholder="DEMO-1003" autocomplete="off"></label><label class="checkout-label">Order email<input name="email" type="email" required maxlength="254" placeholder="customer-a@example.com" autocomplete="off"></label><div class="tracking-actions"><button class="cta" type="submit">Find order</button><button class="outline-button" type="button" id="sample-tracking">Try a sample order</button></div></form><p id="tracking-error" class="checkout-error preview-note" role="alert"></p><div id="tracking-result" aria-live="polite"></div></div></dialog>
   <audio id="background-music" loop preload="none" src="assets/music/chopin-prelude-a-major.mp3"></audio>
   <span id="music-status" class="sr-only" role="status"></span>
-  <script src="store.js"></script><script src="shop.js"></script><script src="storefront.js"></script><script src="landing.js"></script><script type="module" src="watch-hero.js?v=4"></script><script src="music.js"></script>
+  <script src="store.js"></script><script src="shop.js"></script><script src="storefront.js"></script><script src="landing.js"></script><script type="module" src="watch-hero.js?v=5"></script><script src="music.js"></script>
 </body>
 </html>
