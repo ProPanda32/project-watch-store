@@ -4,8 +4,6 @@
   const stage = document.querySelector('.hero-stage');
   const copy = document.querySelector('.hero-copy');
   const header = document.querySelector('.site-header');
-  const video = byId('hero-video');
-  const toggle = byId('video-toggle');
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
   // The cover is decorative, never blocks input, and dissolves without waiting for media.
   const intro = byId('entry-intro');
@@ -26,9 +24,6 @@
   } else {
     finishIntro();
   }
-  let wantsPlayback = !motion.matches;
-  let inView = true;
-  let failed = false;
   let frame = 0;
   const nativeScrollMotion = CSS.supports('animation-timeline', 'scroll(root block)') && CSS.supports('animation-range', '0px 24svh');
   let heroTop = 0;
@@ -39,47 +34,10 @@
   }
   measureHero();
 
-  video.controls = false;
-  toggle.hidden = false;
   document.documentElement.classList.add('motion-ready');
   document.documentElement.classList.toggle('native-scroll-motion', nativeScrollMotion);
 
-  function syncPlaybackButton() {
-    const label = video.paused ? 'Play film' : 'Pause film';
-    toggle.setAttribute('aria-label', label);
-    toggle.title = label;
-    toggle.querySelector('use').setAttribute('href', video.paused ? '#icon-play' : '#icon-pause');
-  }
-
-  function syncPlayback() {
-    if (wantsPlayback && inView && !document.hidden && !failed) {
-      video.play().catch(() => syncPlaybackButton());
-    } else {
-      video.pause();
-    }
-  }
-  toggle.addEventListener('click', () => {
-    wantsPlayback = video.paused;
-    syncPlayback();
-  });
-  video.addEventListener('play', syncPlaybackButton);
-  video.addEventListener('pause', syncPlaybackButton);
-  function showPoster() {
-    failed = true;
-    video.hidden = true;
-    toggle.hidden = true;
-    byId('film-status').textContent = 'The film is unavailable. A still from the collection is shown.';
-  }
-  video.addEventListener('error', showPoster);
-  const sources = video.querySelectorAll('source');
-  let failedSources = 0;
-  for (const source of sources) source.addEventListener('error', () => {
-    failedSources += 1;
-    if (failedSources === sources.length) showPoster();
-  });
-  document.addEventListener('visibilitychange', syncPlayback);
-
-  // Pin briefly, then let normal page scrolling carry the film out of view.
+  // Pin briefly, then let normal page scrolling carry the watch out of view.
   function updateScroll() {
     frame = 0;
     const progress = motion.matches ? 0 : Math.min(1, Math.max(0, window.scrollY - heroTop) / heroTravel);
@@ -87,7 +45,6 @@
     const easedProgress = progress * progress * (3 - 2 * progress);
     const opacity = Math.max(0, 1 - easedProgress * 1.3);
     if(!nativeScrollMotion){
-      hero.style.setProperty('--film-scale', String(1 + easedProgress * .065));
       hero.style.setProperty('--copy-y', `${-easedProgress * 40}px`);
       hero.style.setProperty('--copy-opacity', String(opacity));
     }
@@ -104,16 +61,8 @@
   if('ResizeObserver' in window) new ResizeObserver(() => {measureHero();scheduleScroll();}).observe(hero);
   motion.addEventListener('change', () => {
     if (motion.matches) finishIntro();
-    wantsPlayback = !motion.matches;
-    syncPlayback();
     scheduleScroll();
   });
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(entries => {
-      inView = entries[0].isIntersecting;
-      syncPlayback();
-    }).observe(stage);
-  }
   // Reveal each card as it enters view, rather than revealing the entire grid at once.
   const revealObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
     for (const entry of entries) {
@@ -178,7 +127,6 @@
     revealObserver?.disconnect();
   });
   updateScroll();
-  syncPlayback();
 
   const menu = byId('menu-dialog');
   const menuToggle = byId('menu-toggle');
