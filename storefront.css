@@ -393,7 +393,7 @@ select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px so
 .watch-hero .hero-media:active{cursor:grabbing}
 .watch-hero .hero-media canvas{display:block;width:100%;height:100%;outline:none}
 .watch-hero .hero-stage::after{z-index:1;background:linear-gradient(to bottom,rgba(0,0,0,.22),transparent 23%,transparent 62%,rgba(0,0,0,.64));pointer-events:none}
-.watch-hero .hero-copy{z-index:2;pointer-events:none}
+.watch-hero .hero-copy{z-index:2;pointer-events:none;bottom:clamp(40px,8svh,90px)}
 .watch-hero .hero-link{pointer-events:auto}
 .watch-hero-kicker,.watch-hero-instruction,.watch-hero-status{font-size:10px;letter-spacing:.2em;font-weight:500}
 .watch-hero-kicker{margin:0 0 16px;color:#d8bd8e}
