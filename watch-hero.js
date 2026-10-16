@@ -29,12 +29,12 @@ soft.position.set(2, -3, 4);
 scene.add(soft);
 
 const watchPivot = new THREE.Group();
-watchPivot.rotation.set(-0.13, Math.PI + 0.38, 0.07);
+watchPivot.rotation.set(-0.13, 4.9, 0.07);
 scene.add(watchPivot);
 let centeredWatch = null;
 function fitWatch() {
   if (!centeredWatch) return;
-  const targetSize = viewer.clientWidth < 700 ? 0.9 : 1.9;
+  const targetSize = viewer.clientWidth < 700 ? 0.8 : 1.6;
   centeredWatch.scale.setScalar(targetSize / centeredWatch.userData.originalSize);
 }
 const modelUrls = [
