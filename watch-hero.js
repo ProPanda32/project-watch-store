@@ -41,7 +41,9 @@ scene.add(watchPivot);
 let centeredWatch = null;
 function fitWatch() {
   if (!centeredWatch) return;
-  const targetSize = viewer.clientWidth < 700 ? 1.0 : 1.9;
+  const targetSize = viewer.clientWidth < 700
+    ? Math.min(1.5, viewer.clientWidth * 1.5 / 320)
+    : 1.9;
   centeredWatch.scale.setScalar(targetSize / centeredWatch.userData.originalSize);
 }
 const modelUrls = [
@@ -108,7 +110,7 @@ function resize() {
   renderer.setSize(width, height, false);
   camera.aspect = width / height;
   camera.position.z = width < 700 ? 7.2 : 6;
-  watchPivot.position.set(width < 700 ? -0.18 : -0.3, width < 700 ? 0.14 : 0.2, 0);
+  watchPivot.position.set(width < 700 ? 0.05 : -0.3, width < 700 ? 0.14 : 0.2, 0);
   camera.updateProjectionMatrix();
   fitWatch();
 }
